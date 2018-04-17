@@ -7,9 +7,9 @@
 FILE *f;
 
 int main(int argc, char * argv[]) {
-	int i;
+	int i, flag;
 	char procname[50];
-	char options[NR_OPT]; 
+	char options[NR_OPT]; /* used to sort the options */
 
 	if(argc < 2 || argv[1][0] != '-') {
 		printf("memnode_info -option(s)\n");
@@ -24,9 +24,10 @@ int main(int argc, char * argv[]) {
 	
 	argv++; /* argv[1] */
 	(*argv)++; /* argv[1][1], skip '-' */
+	flag = 1;
 
-	while(**argv != '\0') {
-		switch(**argv) {
+	while(flag) {
+		switch(**argv) {	/* sorting */
 			case 'n':
 				options[0] = 'n';
 				break;
@@ -36,11 +37,21 @@ int main(int argc, char * argv[]) {
 			case 'p':
 				options[2] = 'p';
 				break;
+			case 'h':
+				options[3] = 'h';
+				/* deleting other options. Help option always
+				   alone */
+				for(i = 0; i < NR_OPT-1; i++)
+					options[i] = 0;
+				flag = 0;
+				break;
 			default:
 				printf("Wrong option\n");
 				exit(-3);
 		}
 		(*argv)++;
+		if(**argv == '\0')
+			flag = 0;
 	}
 	
 	for(i = 0; i < NR_OPT; i++) { 
@@ -67,6 +78,8 @@ void show_info(char opt) {
 		case 'p':
 			read_from_to(PAGES_INFO, NULL);
 			break;
+		case 'h':
+			printf("%s\n", HELP_MSG);
 		case 0:
 			break;
 	}
