@@ -50,7 +50,7 @@ static void print_node_info(struct seq_file *m, struct pglist_data *pgdat) {
 
 static void print_pages_info(struct seq_file *m) {
 	int i;
-	int mask;
+	long mask;
 	/* pgd_t *pgd;
 	unsigned long pgd_adr; */
 
@@ -132,6 +132,8 @@ static void print_pages_info(struct seq_file *m) {
 		seq_printf(m, "%s: %s\n", cr4_flags[i], 
 			((cr4 & mask) >> i == 1) ? "true" : "false");
 		mask <<= 1;
+		
+		seq_printf(m, "mask: %0lx\n", mask);
 	}
 
 	seq_printf(m, "\nCR0 value: 0x%0llx\n", cr0);
