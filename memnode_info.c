@@ -51,8 +51,8 @@ static void print_node_info(struct seq_file *m, struct pglist_data *pgdat) {
 static void print_pages_info(struct seq_file *m) {
 	int i;
 	int mask;
-	pgd_t *pgd;
-	unsigned long pgd_adr;
+	/* pgd_t *pgd;
+	unsigned long pgd_adr; */
 
 	char *cr0_flags[] = {"PE", "MP", "EM", "TS", "ET", "NE", NULL, NULL,
 		NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,  "WP", NULL,
@@ -114,20 +114,13 @@ static void print_pages_info(struct seq_file *m) {
 	seq_printf(m, "Mem map +1 flags: %lu\n", m_map->flags);
 	m_map++;
 	seq_printf(m, "Mem map +2 flags: %lu\n", m_map->flags);
-	seq_printf(m, "CR3 addr (phys) = 0x%0x\n", cr3);
-	seq_printf(m, "Physical frame  number PDBR addr: 0x%0x\n", cr3 >> 12);
-	seq_printf(m, "Virtual PDBR addr: 0x%0x\n", (cr3 >> 12) + PAGE_OFFSET);
-	/* pgd_cr3 = (pgd_t *)phys_to_virt(cr3>>12); */
-	/* pgd_cr3 = (pgd_t *)ioremap(cr3>>12, sizeof(pgd_t)); */
-	/* seq_printf(m, "Virtual PDBR adr (macro): %lu\n", virt_to_phys(pgd_cr3)); */
-	/* seq_printf(m, "Virtual PDBR adr allocated: 0x%0x\n", pgd_cr3);
-	seq_printf(m, "pgd value: %lu\n", pgd_cr3->pgd); */
-	
+	seq_printf(m, "CR3 addr (phys) = 0x%0llx\n", cr3);
+	seq_printf(m, "Physical frame  number PDBR addr: 0x%llx\n", cr3 >> 12);
 	
 	seq_printf(m, "Number of page table levels: %d\n", 
 		CONFIG_PGTABLE_LEVELS);
 
-	seq_printf(m, "\nCR4 value: 0x%0x\n", cr4);
+	seq_printf(m, "\nCR4 value: 0x%0llx\n", cr4);
 
 	mask = 1;
 	seq_printf(m, "\nCR4 flags\n---------\n");	
@@ -141,7 +134,7 @@ static void print_pages_info(struct seq_file *m) {
 		mask <<= 1;
 	}
 
-	seq_printf(m, "\nCR0 value: 0x%0x\n", cr0);
+	seq_printf(m, "\nCR0 value: 0x%0llx\n", cr0);
 	mask = 1;
 	seq_printf(m, "\nCR0 flags\n---------\n");	
 	for(i = 0; i < NR_CR0_FLAGS; i++) {
