@@ -156,7 +156,7 @@ static void print_pages_info(struct seq_file *m) {
 	
 	/*
 	pgd_adr = cr3 >> 12;
-	pgd_adr <<= 16;	/* PAE is enabled */
+	pgd_adr <<= 16;	
 	pgd = (pgd_t *)pgd_adr;
 	seq_printf(m, "pgd_addr: %p\n", pgd);	
 	seq_printf(m, "pgd->pgd: %0x\n", pgd->pgd);
