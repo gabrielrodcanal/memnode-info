@@ -51,6 +51,9 @@ static void print_node_info(struct seq_file *m, struct pglist_data *pgdat) {
 static void print_pages_info(struct seq_file *m) {
 	int i;
 	int mask;
+	pgd_t *pgd;
+	unsigned long pgd_adr;
+
 	char *cr0_flags[] = {"PE", "MP", "EM", "TS", "ET", "NE", NULL, NULL,
 		NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,  "WP", NULL,
  		"AM", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
@@ -150,6 +153,14 @@ static void print_pages_info(struct seq_file *m) {
 			((cr0 & mask) >> i == 1) ? "true" : "false");
 		mask <<= 1;
 	}
+	
+	/*
+	pgd_adr = cr3 >> 12;
+	pgd_adr <<= 16;	/* PAE is enabled */
+	pgd = (pgd_t *)pgd_adr;
+	seq_printf(m, "pgd_addr: %p\n", pgd);	
+	seq_printf(m, "pgd->pgd: %0x\n", pgd->pgd);
+	*/
 }
 
 static void print_zone_info(struct seq_file *m, struct zone *zone) {
